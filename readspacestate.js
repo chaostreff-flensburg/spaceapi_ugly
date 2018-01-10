@@ -37,20 +37,20 @@ function make_json() {
 
 // create a bot
 var bot = new SlackBot({
-    token: 'xoxb-', // Add a bot https://my.slack.com/services/new/bot and put the token
+    token: 'xoxb-YOUR_API_TOKEN', // Add a bot https://my.slack.com/services/new/bot and put the token
     name: 'spaceopenread'
 });
 
 bot.on('message', function(data) {
-    // all ingoing events https://api.slack.com/rtm
+// all ingoing events https://api.slack.com/rtm
 //    console.log(data);
-        if(data.type == 'message' && data.channel == '' && data.text == '')
+        if(data.type == 'message' && data.channel == 'YOUR_CHANNEL_ID' && data.text == 'HERE_YOUR_TRIGGER_TEXT')
         {
                 // Space ist offen
                 state = true;
                 lasttime = Math.floor(new Date() / 1000);
         }
-        if(data.type == 'message' && data.channel == '' && data.text == '')
+        if (data.type == 'message' && data.channel == 'YOUR_CHANNEL_ID' && data.text == 'HERE_YOUR_TRIGGER_TEXT')
         {
                 // Space ist geschlossen
                 state = false;
