@@ -47,13 +47,13 @@ bot.on('message', function(data) {
         if(data.type == 'message' && data.channel == '' && data.text == '')
         {
                 // Space ist offen
-                state = 'open';
+                state = true;
                 lasttime = Math.floor(new Date() / 1000);
         }
         if(data.type == 'message' && data.channel == '' && data.text == '')
         {
                 // Space ist geschlossen
-                state = 'close';
+                state = false;
                 lasttime = Math.floor(new Date() / 1000);
         }
 });
