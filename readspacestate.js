@@ -10,7 +10,13 @@ lat = 54.8045,
 lon = 9.42341,
 twitter = "@chaos_fl",
 mail = "mail@chaostreff-flensburg.de",
-issue_mail = "mail@chaostreff-flensburg.de"; 
+issue_mail = "mail@chaostreff-flensburg.de",
+//Blog Feed
+feedType = "application/rss+xml",
+feedUrl = "https://chaostreff-flensburg.de/feed/",
+//Calendar
+calType = "ical",
+calUrl = "https://calendar.google.com/calendar/ical/asgooqntcboot4uta3jvt30vus%40group.calendar.google.com/public/basic.ics";
 
 // Slack credentials and trigger words
 var token = 'YOUR_TOKEN', //Token of your slackbot
@@ -44,9 +50,19 @@ function make_json() {
     "state":{
       "open": state,
       "icon":{
-              "open":"",
-              "closed":""
+        "open":"",
+        "closed":""
       },
+    },
+    "feeds": {
+      "blog": {
+        "type": feedType,
+        "url": feedUrl
+      },
+      "calendar": {
+        "type": calType,
+        "url": calUrl
+      }
     },
     "lastchange": lasttime
   };
