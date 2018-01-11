@@ -1,7 +1,7 @@
 {
   "name": "spaceapi_ugly",
   "version": "1.0.0",
-  "description": "",
+  "description": "Our config of the Spaceapi",
   "main": "readspacestate.js",
   "dependencies": {
     "http": "^0.0.0",

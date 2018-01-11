@@ -1,66 +1,81 @@
 var SlackBot = require('slackbots');
 var http = require('http');
 
+//Your data about the space
+var space = "Chaostreff Flensburg",
+logo = "https://chaostreff-flensburg.de/wp-content/uploads/2017/04/cropped-cropped-Leuchtturmrakete-02-1.png",
+url = "https://chaostreff-flensburg.de/",
+address = "Apenrader Str. 49, 24939 Flensburg",
+lat = 54.8045,
+lon = 9.42341,
+twitter = "@chaos_fl",
+mail = "mail@chaostreff-flensburg.de",
+issue_mail = "mail@chaostreff-flensburg.de"; 
+
+// Slack credentials and trigger words
+var token = 'YOUR_TOKEN', //Token of your slackbot
+botName = 'YOUR_BOTNAME', //Name of your bot
+channelId = 'YOUR_CHANNELID',
+triggerOpen = 'Space ist auf!',
+triggerClose = 'Space ist ab jetzt geschlossen!';
+
 var state = null;
 var lasttime = Math.floor(new Date() / 1000);
 var jsonstatic = {};
 function make_json() {
-        jsonstatic = {
-                        "api": "0.13",
-                        "space": "",
-                        "logo": "",
-                        "url": "",
-                        "location" : {
-                                "address": "",
-                                "lat" : 1,
-                                "lon" : 1
-                        },
-                        "contact" : {
-                                "twitter": "",
-                                "email": "",
-                                "issue_mail": ""
-                        },
-                        "issue_report_channels": [
-                                "issue_mail"
-                        ],
-                        "state":{
-                                "open": state,
-                                "icon":{
-                                              "open":"",
-                                              "closed":""
-                                },
-                        },
-                        "lastchange": lasttime
-                 };
-        return jsonstatic;
+  jsonstatic = {
+    "api": "0.13",
+    "space": space,
+    "logo": logo,
+    "url": url,
+    "location" : {
+      "address": address,
+      "lat" : lat,
+      "lon" : lon
+    },
+    "contact" : {
+      "twitter": twitter,
+      "email": mail,
+      "issue_mail": issue_mail
+    },
+    "issue_report_channels": [
+      "issue_mail"
+    ],
+    "state":{
+      "open": state,
+      "icon":{
+              "open":"",
+              "closed":""
+      },
+    },
+    "lastchange": lasttime
+  };
+  return jsonstatic;
 };
 
-// create a bot
 var bot = new SlackBot({
-    token: 'xoxb-YOUR_API_TOKEN', // Add a bot https://my.slack.com/services/new/bot and put the token
-    name: 'spaceopenread'
+  token: token,
+  name: botName
 });
 
 bot.on('message', function(data) {
-// all ingoing events https://api.slack.com/rtm
-//    console.log(data);
-        if(data.type == 'message' && data.channel == 'YOUR_CHANNEL_ID' && data.text == 'HERE_YOUR_TRIGGER_TEXT')
-        {
-                // Space ist offen
-                state = true;
-                lasttime = Math.floor(new Date() / 1000);
-        }
-        if (data.type == 'message' && data.channel == 'YOUR_CHANNEL_ID' && data.text == 'HERE_YOUR_TRIGGER_TEXT')
-        {
-                // Space ist geschlossen
-                state = false;
-                lasttime = Math.floor(new Date() / 1000);
-        }
+  if (data.type == 'message' && data.channel == channelId && data.text == triggerOpen)
+  {
+    // Space ist offen
+    state = true;
+    lasttime = Math.floor(new Date() / 1000);
+  }
+  if (data.type == 'message' && data.channel == channelId && data.text == triggerClose)
+  {
+    // Space ist geschlossen
+    state = false;
+    lasttime = Math.floor(new Date() / 1000);
+  }
 });
 
 var app = http.createServer(function(req,res){
-    res.setHeader('Content-Type', 'application/json');
-    res.write(JSON.stringify(make_json(), null, 3));
-    res.end();
+  res.setHeader('Content-Type', 'application/json');
+  res.write(JSON.stringify(make_json(), null, 3));
+  res.end();
 });
 app.listen(8700);
