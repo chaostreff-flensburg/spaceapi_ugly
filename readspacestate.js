@@ -11,6 +11,8 @@ lon = 9.42341,
 twitter = "@chaos_fl",
 mail = "mail@chaostreff-flensburg.de",
 issue_mail = "mail@chaostreff-flensburg.de",
+// http token
+httptoken = "somerandomstring",
 //Blog Feed
 feedType = "application/rss+xml",
 feedUrl = "https://chaostreff-flensburg.de/feed/",
@@ -89,9 +91,31 @@ bot.on('message', function(data) {
   }
 });
 
-var app = http.createServer(function(req,res){
+var app = http.createServer(anwser_request);
+
+function anwser_request(req,res)
+{
+  var parseurl = require('url').parse(req.url, true);
+  // favicon.ico return 
+  if(parseurl.path == "/favicon.ico")
+  {
+    res.end();
+    return;
+  }
+  // Http state change
+  if(typeof parseurl.query.httptopen !== 'undefined' && typeof parseurl.query.state !== 'undefined' && parseurl.query.httptopen == httptoken)
+  {
+    if(parseurl.query.state == "open")
+      state = true;
+    if(parseurl.query.state == "close")
+      state = false;
+    res.write("OK state is now:" + state);
+    res.end();
+    return;
+  }
+  // Send json
   res.setHeader('Content-Type', 'application/json');
   res.write(JSON.stringify(make_json(), null, 3));
   res.end();
-});
+}
 app.listen(8700);
