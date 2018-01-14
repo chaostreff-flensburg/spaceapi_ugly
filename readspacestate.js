@@ -49,6 +49,7 @@ function make_json() {
     ],
     "state":{
       "open": state,
+      "lastchange": lasttime,
       "icon":{
         "open":"",
         "closed":""
@@ -63,8 +64,7 @@ function make_json() {
         "type": calType,
         "url": calUrl
       }
-    },
-    "lastchange": lasttime
+    }
   };
   return jsonstatic;
 };
