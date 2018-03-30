@@ -73,11 +73,14 @@ function make_json() {
   return jsonstatic;
 };
 
-var bot = new SlackBot({
-  token: token,
-  name: botName
-});
-if(readchannel)
+if(readchannel == true || postchannel == true)
+{
+  var bot = new SlackBot({
+    token: token,
+    name: botName
+  });
+}
+if(readchannel == true)
 {
   bot.on('message', function(data) {
     if (data.type == 'message' && data.channel == channelId && data.text == triggerOpen)
