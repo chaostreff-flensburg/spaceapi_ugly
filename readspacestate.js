@@ -119,7 +119,7 @@ function anwser_request(req,res)
     res.write("OK state is now:" + state);
     // Schreibe im Slack Channel die Status Änderung
     if(postchannel == true)
-      bot.postMessageToChannel(channelId, 'Space ist jetzt ' . parseurl.query.state); 
+      bot.postMessageToChannel(channelId, (parseurl.query.state == "open" ? triggerOpen : triggerClose)); 
     res.end();
     return;
   }
