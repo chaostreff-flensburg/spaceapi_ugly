@@ -25,7 +25,9 @@ var token = 'YOUR_TOKEN', //Token of your slackbot
 botName = 'YOUR_BOTNAME', //Name of your bot
 channelId = 'YOUR_CHANNELID',
 triggerOpen = 'Space ist auf!',
-triggerClose = 'Space ist ab jetzt geschlossen!';
+triggerClose = 'Space ist ab jetzt geschlossen!',
+readchannel = false,
+postchannel = false;
 
 var state = null;
 var lasttime = Math.floor(new Date() / 1000);
@@ -75,21 +77,23 @@ var bot = new SlackBot({
   token: token,
   name: botName
 });
-
-bot.on('message', function(data) {
-  if (data.type == 'message' && data.channel == channelId && data.text == triggerOpen)
-  {
-    // Space ist offen
-    state = true;
-    lasttime = Math.floor(new Date() / 1000);
-  }
-  if (data.type == 'message' && data.channel == channelId && data.text == triggerClose)
-  {
-    // Space ist geschlossen
-    state = false;
-    lasttime = Math.floor(new Date() / 1000);
-  }
-});
+if(readchannel)
+{
+  bot.on('message', function(data) {
+    if (data.type == 'message' && data.channel == channelId && data.text == triggerOpen)
+    {
+      // Space ist offen
+      state = true;
+      lasttime = Math.floor(new Date() / 1000);
+    }
+    if (data.type == 'message' && data.channel == channelId && data.text == triggerClose)
+    {
+      // Space ist geschlossen
+      state = false;
+      lasttime = Math.floor(new Date() / 1000);
+    }
+  });
+}
 
 var app = http.createServer(anwser_request);
 
@@ -110,6 +114,9 @@ function anwser_request(req,res)
     if(parseurl.query.state == "close")
       state = false;
     res.write("OK state is now:" + state);
+    // Schreibe im Slack Channel die Status Änderung
+    if(postchannel == true)
+      bot.postMessageToChannel(channelId, 'Space ist jetzt ' . parseurl.query.state); 
     res.end();
     return;
   }
